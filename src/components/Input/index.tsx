@@ -1,4 +1,5 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, useEffect, useRef } from 'react';
+import { useField } from '@unform/core';
 import { IconBaseProps } from 'react-icons/lib';
 
 import { Container } from './styles';
@@ -8,11 +9,22 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ComponentType<IconBaseProps>;
 }
 
-const Button: React.FC<InputProps> = ({ icon: Icon, ...rest }) => {
+const Button: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
+  const inputRef = useRef(null);
+  const { fieldName, defaultValue, error, registerField } = useField(name);
+
+  useEffect(() => {
+    registerField({
+      name: fieldName,
+      ref: inputRef.current,
+      path: 'value',
+    });
+  }, [fieldName, registerField]);
+
   return (
     <Container>
       {Icon && <Icon />}
-      <input {...rest} />
+      <input defaultValue={defaultValue} ref={inputRef} {...rest} />
     </Container>
   );
 };
