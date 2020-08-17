@@ -36,6 +36,7 @@
         "allowExpressions": true
       }
     ],
+    "@typescript-eslint/ban-types": "off",
     "camelcase": "off",
     "import/extensions": [
       "error",
